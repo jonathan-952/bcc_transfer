@@ -1,6 +1,6 @@
-from supabase import Client, create_client
+from supabase import create_client, Client
 
-async def db_connection(key, url):
+async def db_connection(key: str, url: str):
     supabase: Client = create_client(url, key)
 
     return supabase
@@ -14,7 +14,7 @@ async def get_degree(supabase, program_id):
             .execute()
         )
         return res
-    except Exception as e:
+    except Exception as e: 
         print(e)
 
 async def get_degree_requirements(supabase, program_id):
