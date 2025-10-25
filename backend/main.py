@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from db import db_connection, get_degree
+from db import db_connection, get_degree_id
 from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
@@ -18,10 +18,12 @@ async def lifespan(app: FastAPI):
     global supabase
     load_dotenv()
 
-    db_url = os.getenv("DB_URL")
-    db_key = os.getenv('DB_KEY')
-
-    supabase = db_connection(db_url, db_key)
+    DB_URL = os.getenv("DB_URL", "")
+    DB_KEY = os.getenv('DB_KEY', "")
+    try:
+        supabase = db_connection(DB_KEY, DB_URL)
+    except Exception as e:
+        print(e)
     yield
     
         
@@ -31,8 +33,8 @@ app = FastAPI(lifespan=lifespan)
 async def main():
     return {"message": "works"}
 
-@app.get('/degree/${id}')
+@app.get('/degree/{id}')
 async def get_degree(id: int):
     
-    return get_degree(supabase, id)
+    return get_degree_id(supabase, id)
 

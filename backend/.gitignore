@@ -1,4 +1,5 @@
 .env
-venv
-supabase
+venv/
 .vscode
+__pycache__/
+supabase/

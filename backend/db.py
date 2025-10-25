@@ -1,11 +1,11 @@
 from supabase import create_client, Client
 
-async def db_connection(key: str, url: str):
+def db_connection(key: str, url: str):
     supabase: Client = create_client(url, key)
 
     return supabase
 
-async def get_degree(supabase, program_id):
+def get_degree_id(supabase, program_id):
     try:
         res = (
             supabase.table('programs')
@@ -13,7 +13,7 @@ async def get_degree(supabase, program_id):
             .eq('program_id', program_id)
             .execute()
         )
-        return res
+        return res.data
     except Exception as e: 
         print(e)
 
@@ -28,7 +28,3 @@ async def get_degree_requirements(supabase, program_id):
         return res
     except Exception as e:
         print(e)
-        
-
-
-
