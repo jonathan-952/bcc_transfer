@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from db import db_connection, get_degree_id
+from db import db_connection, get_degree_id, get_degree_requirements
 from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
@@ -38,3 +38,8 @@ async def get_degree(id: int):
     
     return get_degree_id(supabase, id)
 
+@app.get('/degree/{id}/requirements')
+async def get_requirements(id: int):
+
+    return get_degree_requirements(supabase, id)
+    # extract courses from here

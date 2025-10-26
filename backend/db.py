@@ -17,14 +17,15 @@ def get_degree_id(supabase, program_id):
     except Exception as e: 
         print(e)
 
-async def get_degree_requirements(supabase, program_id):
+def get_degree_requirements(supabase, program_id):
     try:
         res = (
             supabase.table('requirements')
-            .select('program_id','total_credits', 'requirement_id', 'courses', 'count', 'credits')
+            .select('program_id,requirement_id,courses,count,credits')
             .eq('program_id', program_id)
             .execute()
         )
-        return res
+        return res.data
     except Exception as e:
         print(e)
+        
