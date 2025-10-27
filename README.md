@@ -1,3 +1,3 @@
-a convenient (I hope) way for bcc students to upload their unofficical transcript and see transfer prospects to a selection of schools.
+a convenient way for bcc students to upload their unofficical transcript and see transfer prospects to a selection of schools.
 
 work in progress...
