@@ -3,6 +3,8 @@ from db import db_connection, get_degree_id, get_degree_requirements
 from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
+from parser import parse_transcript
+from course_matching import course_match
 
 # api endpoints:
 #   fetch a degree by id
@@ -29,10 +31,6 @@ async def lifespan(app: FastAPI):
         
 app = FastAPI(lifespan=lifespan)
 
-@app.get('/')
-async def main():
-    return {"message": "works"}
-
 @app.get('/degree/{id}')
 async def get_degree(id: int):
     
@@ -40,6 +38,11 @@ async def get_degree(id: int):
 
 @app.get('/degree/{id}/requirements')
 async def get_requirements(id: int):
+    # take in transcript from client and pass to func
+    res = get_degree_requirements(supabase, id)
+    transcript_courses = parse_transcript('testfile.pdf')
 
-    return get_degree_requirements(supabase, id)
+    return course_match(res, transcript_courses)
+
+    
     # extract courses from here
