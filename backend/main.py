@@ -30,6 +30,10 @@ async def lifespan(app: FastAPI):
     
         
 app = FastAPI(lifespan=lifespan)
+@app.get('/')
+async def main():
+    return {'message': 'yuh'}
+
 
 @app.get('/degree/{id}')
 async def get_degree(id: int):

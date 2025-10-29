@@ -47,7 +47,6 @@ def parse_transcript(transcript):
             }
 
             courses.append(course)
-    print(courses)
 
     return courses
     
