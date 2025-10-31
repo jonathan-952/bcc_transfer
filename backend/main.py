@@ -1,16 +1,10 @@
 from fastapi import FastAPI
-from db import db_connection, get_degree_id, get_degree_requirements
+from db import db_connection, get_degree_id, get_degree_requirements, get_all_schools, get_school_majors
 from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
 from parser import parse_transcript
 from course_matching import course_match
-
-# api endpoints:
-#   fetch a degree by id
-#   fetch all requirements by degree id
-#   fetch courses by requirement id
-# 
 
 
 supabase = None
@@ -41,12 +35,22 @@ async def get_degree(id: int):
     return get_degree_id(supabase, id)
 
 @app.get('/degree/{id}/requirements')
-async def get_requirements(id: int):
+async def get_requirements(id: int, transcript):
     # take in transcript from client and pass to func
     res = get_degree_requirements(supabase, id)
-    transcript_courses = parse_transcript('testfile.pdf')
+    transcript_courses = parse_transcript(transcript)
 
     return course_match(res, transcript_courses)
-
-    
     # extract courses from here
+
+@app.get('/schools')
+async def get_schools():
+    res = get_all_schools(supabase)
+
+    return res
+
+@app.get('/schools/{selectedSchool}/majors')
+async def get_majors(selectedSchool: int):
+    res = get_school_majors(supabase, selectedSchool)
+
+    return res

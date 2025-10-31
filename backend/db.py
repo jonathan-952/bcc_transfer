@@ -28,4 +28,26 @@ def get_degree_requirements(supabase, program_id):
         return res.data
     except Exception as e:
         print(e)
+
+def get_all_schools(supabase):
+    try:
+        res = (
+            supabase.table('schools')
+            .select('school_id, school_name')
+            .execute()
+        )
+        return res.data
+    except Exception as e: 
+        print(e)
         
+def get_school_majors(supabase, school_id):
+    try:
+        res = (
+            supabase.table('programs')
+            .select('program_name, school_id, total_credits, program_id')
+            .eq('school_id', school_id)
+            .execute()
+        )
+        return res.data
+    except Exception as e:
+        print(e)

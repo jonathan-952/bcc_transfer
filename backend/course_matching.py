@@ -14,7 +14,6 @@ def course_match(requirements, transcript_courses):
 
 
     for requirement in requirements:
-        print(requirement)
         requirement_courses = [c.strip() for c in requirement['courses'].split(',')] if requirement['courses'] != None else []
 
         matched_courses = set(requirement_courses).intersection(set(t_course_list))
