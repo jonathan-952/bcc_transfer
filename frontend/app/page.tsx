@@ -31,12 +31,12 @@ export default function Page() {
 
   const handleTranscriptParsed = (courses: Course[]) => {
     setTransferData((prev) => ({ ...prev, courses }))
-    setStep("select")
+    setStep("results")
   }
 
   const handleSchoolSelected = (school: string, major: string) => {
     setTransferData((prev) => ({ ...prev, targetSchool: school, targetMajor: major }))
-    setStep("results")
+    setStep("upload")
   }
 
   const handleReset = () => {

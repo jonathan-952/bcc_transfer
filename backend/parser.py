@@ -1,11 +1,12 @@
 import pdfplumber
 import re
+import io
 
 
-def parse_transcript(transcript):
+async def parse_transcript(transcript):
     text = []
-
-    with pdfplumber.open(transcript) as pdf:
+    file_bytes = await transcript.read()
+    with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
         for page in pdf.pages:
             left_col = page.crop((0, 0, page.width/2, page.height))
             right_col = page.crop((page.width/2, 0, page.width, page.height))
@@ -38,6 +39,9 @@ def parse_transcript(transcript):
             # skip if no credit or not passing grade or course currently in prog
             if elements[-1] == '0.0' or elements[-2] in grades or elements[-2] == 'CIP':
                 continue
+            
+            if elements[0] == 'WRT101':
+                elements[0] = 'ENG101'
 
             # handle if course is an elective
             course = {
@@ -49,8 +53,6 @@ def parse_transcript(transcript):
             courses.append(course)
 
     return courses
-    
-parse_transcript('testfile.pdf')
            
 
 

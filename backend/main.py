@@ -1,11 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from db import db_connection, get_degree_id, get_degree_requirements, get_all_schools, get_school_majors
 from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
 from parser import parse_transcript
 from course_matching import course_match
+from fastapi.middleware.cors import CORSMiddleware
 
+origins = [
+        "http://localhost:3000",
+        "http://localhost:8080",
+        "https://yourfrontend.com",
+    ]
 
 supabase = None
 @asynccontextmanager
@@ -24,6 +30,15 @@ async def lifespan(app: FastAPI):
     
         
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # List of allowed origins
+    allow_credentials=True,  # Allow cookies and authorization headers
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],  # Allow all headers in the request
+)
+
 @app.get('/')
 async def main():
     return {'message': 'yuh'}
@@ -34,13 +49,16 @@ async def get_degree(id: int):
     
     return get_degree_id(supabase, id)
 
-@app.get('/degree/{id}/requirements')
-async def get_requirements(id: int, transcript):
+@app.post('/degree/{id}/requirements')
+async def get_requirements(id: int, transcript: UploadFile = File(...)):
     # take in transcript from client and pass to func
     res = get_degree_requirements(supabase, id)
-    transcript_courses = parse_transcript(transcript)
+    
+    transcript_courses = await parse_transcript(transcript)
 
-    return course_match(res, transcript_courses)
+    res = course_match(res, transcript_courses)
+    print(res)
+    return res
     # extract courses from here
 
 @app.get('/schools')

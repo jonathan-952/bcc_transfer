@@ -11,7 +11,7 @@ export function CreditCounter({ transferData }: CreditCounterProps) {
   const matchResults = matchCourses(transferData.courses, transferData.targetSchool, transferData.targetMajor)
   const { transferable: transferableCredits } = calculateTransferCredits(matchResults)
 
-  const typicalRequirement = 120
+  const typicalRequirement = 60
 
   return (
     <div className="space-y-2 border-b border-border pb-8">

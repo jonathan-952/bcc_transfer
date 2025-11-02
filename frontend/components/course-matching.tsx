@@ -6,7 +6,7 @@ import type { TransferData } from "@/app/page"
 import { matchCourses, type MatchResult } from "@/lib/course-matcher"
 
 type CourseMatchingProps = {
-  transferData: TransferData
+  transferData: []
   onReset: () => void
 }
 

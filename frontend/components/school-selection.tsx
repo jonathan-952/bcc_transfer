@@ -22,7 +22,7 @@ type SchoolSelectionProps = {
   onBack: () => void
 } 
 
-export async function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
+export function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
   const [selectedSchool, setSelectedSchool] = useState("")
   const [selectedMajor, setSelectedMajor] = useState("")
   const [schools, setSchools] = useState<School[]>([])
@@ -32,10 +32,12 @@ export async function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps)
   useEffect(() => {
 
     const fetch_schools = (async () => {
-      const res = await axios.get(`${API_ROUTE}/schools`)
+      const res = await axios.get(`http://127.0.0.1:8000/schools`)
       setSchools(res.data)
     
     })
+
+    fetch_schools()
     
 
   }, [])
@@ -46,8 +48,9 @@ export async function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps)
     }
   }
 
-  const handleTargetSchool = async () => {
-    const res = await axios.get(`http://127.0.0.1:8000/schools/${selectedSchool}/majors`)
+  const handleTargetSchool = async (value : string) => {
+    console.log(selectedSchool)
+    const res = await axios.get(`http://127.0.0.1:8000/schools/${value}/majors`)
     setMajors(res.data)
   }
 
@@ -64,7 +67,7 @@ export async function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps)
             <Label htmlFor="school">Target School</Label>
             <Select value={selectedSchool} onValueChange={(value) => {
               setSelectedSchool(value)
-              handleTargetSchool
+              handleTargetSchool(value)
             }}>
               <SelectTrigger id="school">
                 <SelectValue placeholder="Select a school" />

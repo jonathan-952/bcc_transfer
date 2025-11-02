@@ -23,14 +23,20 @@ export function TranscriptUpload({ onTranscriptParsed, program_id }: TranscriptU
 
   const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
+    const formData = new FormData()
+  
     if (file) {
+      formData.append('transcript', file)
       setIsProcessing(true)
-      const res = await axios.put(`${API_ROUTE}/degree/${program_id}/requirements`,
+      const res = await axios.post(`http://127.0.0.1:8000/degree/${program_id}/requirements`,
+        formData,
         {
-        transcript: file
+          headers: {"Content-Type": "multipart/form-data"},
         })
+      
       setIsProcessing(false)
       setCourses(res.data)
+      onTranscriptParsed(res.data)
     }
   }
 
