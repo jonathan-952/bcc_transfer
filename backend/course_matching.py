@@ -6,8 +6,6 @@
 # need to fill in for electives
 # unless course grade is less than C, label as unsure
 def course_match(requirements, transcript_courses):
-    print('requirements: ',requirements)
-    print('transcript: ', transcript_courses)
     total_credits = 0
     courses = []
     t_course_list = [element['course_code'] for element in transcript_courses if element['TR'] != 1]

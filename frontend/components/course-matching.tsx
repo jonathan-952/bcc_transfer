@@ -3,25 +3,14 @@
 import { Button } from "@/components/ui/button"
 import { RotateCcw } from "lucide-react"
 import type { TransferData } from "@/app/page"
-import { matchCourses, type MatchResult } from "@/lib/course-matcher"
 
 type CourseMatchingProps = {
-  transferData: []
+  transferData: TransferData
   onReset: () => void
 }
 
 export function CourseMatching({ transferData, onReset }: CourseMatchingProps) {
-  const matchedCourses: MatchResult[] = matchCourses(
-    transferData.courses,
-    transferData.targetSchool,
-    transferData.targetMajor,
-  )
-
-  const fulfilledCourses = matchedCourses.filter((r) => r.transfers)
-  const uncertainCourses = matchedCourses.filter((r) => !r.transfers && r.reason === "No articulation agreement found")
-  const missingRequirements = matchedCourses.filter(
-    (r) => !r.transfers && r.reason !== "No articulation agreement found",
-  )
+  console.log(transferData)
 
   return (
     <div className="space-y-8">
@@ -33,33 +22,22 @@ export function CourseMatching({ transferData, onReset }: CourseMatchingProps) {
         </Button>
       </div>
 
-      {fulfilledCourses.length > 0 && (
+      {transferData.courses.length > 0 && (
         <div className="space-y-4">
           <div>
             <h3 className="text-lg font-medium text-foreground">Fulfilled Requirements</h3>
             <p className="text-sm text-muted-foreground">Courses that transfer and meet degree requirements</p>
           </div>
           <div className="space-y-2">
-            {fulfilledCourses.map((result) => (
+            {transferData.courses.map((result, index) => (
               <div
-                key={result.course.id}
+                key={index}
                 className="flex items-center justify-between border border-border bg-card p-4 transition-colors hover:bg-muted/30"
               >
                 <div className="flex-1">
                   <p className="font-medium text-foreground">
-                    {result.course.code} - {result.course.name}
+                    {result}
                   </p>
-                  {result.transfersAs && result.targetCourseName && (
-                    <p className="text-sm text-muted-foreground">
-                      Transfers as: {result.transfersAs} - {result.targetCourseName}
-                    </p>
-                  )}
-                </div>
-                <div className="flex items-center gap-3">
-                  {result.course.grade && (
-                    <span className="font-mono text-sm text-muted-foreground">{result.course.grade}</span>
-                  )}
-                  <span className="text-sm font-medium text-foreground">{result.course.credits} credits</span>
                 </div>
               </div>
             ))}
@@ -67,61 +45,25 @@ export function CourseMatching({ transferData, onReset }: CourseMatchingProps) {
         </div>
       )}
 
-      {uncertainCourses.length > 0 && (
+      {transferData.review.length > 0 && (
         <div className="space-y-4">
           <div>
             <h3 className="text-lg font-medium text-foreground">Requires Counselor Review</h3>
             <p className="text-sm text-muted-foreground">
-              Courses without articulation agreements that may still transfer
+              Transfer classes without articulation agreements or may satisfy some elective requirement
             </p>
           </div>
           <div className="space-y-2">
-            {uncertainCourses.map((result) => (
+            {transferData.review.map((result, index) => (
               <div
-                key={result.course.id}
+                key={index}
                 className="flex items-center justify-between border border-border bg-muted/20 p-4 transition-colors hover:bg-muted/40"
               >
                 <div className="flex-1">
                   <p className="font-medium text-foreground">
-                    {result.course.code} - {result.course.name}
+                    {result}
                   </p>
-                  <p className="text-sm text-muted-foreground">{result.reason}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  {result.course.grade && (
-                    <span className="font-mono text-sm text-muted-foreground">{result.course.grade}</span>
-                  )}
-                  <span className="text-sm font-medium text-foreground">{result.course.credits} credits</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {missingRequirements.length > 0 && (
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-lg font-medium text-foreground">Missing Requirements</h3>
-            <p className="text-sm text-muted-foreground">Courses that do not meet transfer requirements</p>
-          </div>
-          <div className="space-y-2">
-            {missingRequirements.map((result) => (
-              <div
-                key={result.course.id}
-                className="flex items-center justify-between border border-border bg-card p-4 opacity-60 transition-colors hover:opacity-80"
-              >
-                <div className="flex-1">
-                  <p className="font-medium text-foreground">
-                    {result.course.code} - {result.course.name}
-                  </p>
-                  <p className="text-sm text-muted-foreground">{result.reason}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  {result.course.grade && (
-                    <span className="font-mono text-sm text-muted-foreground">{result.course.grade}</span>
-                  )}
-                  <span className="text-sm font-medium text-foreground">{result.course.credits} credits</span>
+    
                 </div>
               </div>
             ))}

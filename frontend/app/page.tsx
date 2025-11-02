@@ -4,19 +4,12 @@ import { useState } from "react"
 import { TranscriptUpload } from "@/components/transcript-upload"
 import { SchoolSelection } from "@/components/school-selection"
 import { CourseMatching } from "@/components/course-matching"
-import { CreditCounter } from "@/components/credit-counter"
 import { GraduationCap } from "lucide-react"
 
-export type Course = {
-  id: string
-  code: string
-  name: string
-  credits: number
-  grade?: string
-}
 
 export type TransferData = {
-  courses: Course[]
+  courses: string[]
+  review: string[]
   targetSchool: string
   targetMajor: string
 }
@@ -25,12 +18,13 @@ export default function Page() {
   const [step, setStep] = useState<"upload" | "select" | "results">("select")
   const [transferData, setTransferData] = useState<TransferData>({
     courses: [],
+    review: [],
     targetSchool: "",
     targetMajor: "",
   })
 
-  const handleTranscriptParsed = (courses: Course[]) => {
-    setTransferData((prev) => ({ ...prev, courses }))
+  const handleTranscriptParsed = (courses: string[], review: string[]) => {
+    setTransferData((prev) => ({ ...prev, courses, review }))
     setStep("results")
   }
 
@@ -40,7 +34,7 @@ export default function Page() {
   }
 
   const handleReset = () => {
-    setTransferData({ courses: [], targetSchool: "", targetMajor: "" })
+    setTransferData({ courses: [], review: [], targetSchool: "", targetMajor: "" })
     setStep("upload")
   }
 
@@ -54,7 +48,6 @@ export default function Page() {
         )}
         {step === "results" && (
           <div className="space-y-12">
-            <CreditCounter transferData={transferData} />
             <CourseMatching transferData={transferData} onReset={handleReset} />
           </div>
         )}

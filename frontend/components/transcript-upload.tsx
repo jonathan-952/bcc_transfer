@@ -6,11 +6,10 @@ import { useState, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Upload, FileText, Loader2 } from "lucide-react"
-import type { Course } from "@/app/page"
 import axios from 'axios';
 
 type TranscriptUploadProps = {
-  onTranscriptParsed: (courses: Course[]) => void
+  onTranscriptParsed: (courses: string[], review: string[]) => void
   program_id : string
 }
 
@@ -36,7 +35,7 @@ export function TranscriptUpload({ onTranscriptParsed, program_id }: TranscriptU
       
       setIsProcessing(false)
       setCourses(res.data)
-      onTranscriptParsed(res.data)
+      onTranscriptParsed(res.data.courses, res.data.review)
     }
   }
 
