@@ -10,6 +10,7 @@ import { GraduationCap } from "lucide-react"
 export type TransferData = {
   courses: string[]
   review: string[]
+  total_credits: number
   targetSchool: string
   targetMajor: string
 }
@@ -21,10 +22,11 @@ export default function Page() {
     review: [],
     targetSchool: "",
     targetMajor: "",
+    total_credits: 0
   })
 
-  const handleTranscriptParsed = (courses: string[], review: string[]) => {
-    setTransferData((prev) => ({ ...prev, courses, review }))
+  const handleTranscriptParsed = (courses: string[], review: string[], total_credits: number) => {
+    setTransferData((prev) => ({ ...prev, courses, review, total_credits}))
     setStep("results")
   }
 
@@ -34,8 +36,8 @@ export default function Page() {
   }
 
   const handleReset = () => {
-    setTransferData({ courses: [], review: [], targetSchool: "", targetMajor: "" })
-    setStep("upload")
+    setTransferData({ courses: [], review: [], targetSchool: "", targetMajor: "", total_credits: 0})
+    setStep("select")
   }
 
   return (

@@ -73,7 +73,7 @@ export function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
                 <SelectValue placeholder="Select a school" />
               </SelectTrigger>
               <SelectContent>
-                {schools.map(({school_name, school_id}) => (
+                {(schools ?? []).map(({school_name, school_id}) => (
                   <SelectItem key={school_name} value={school_id.toString()}>
                     {school_name}
                   </SelectItem>
@@ -89,7 +89,7 @@ export function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
                 <SelectValue placeholder="Select a major" />
               </SelectTrigger>
               <SelectContent>
-                {majors.map(({program_name, program_id}) => (
+                {(majors ?? []).map(({program_name, program_id}) => (
                   <SelectItem key={program_name} value={program_id.toString()}>
                     {program_name}
                   </SelectItem>

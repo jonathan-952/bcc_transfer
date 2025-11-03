@@ -51,3 +51,15 @@ def get_school_majors(supabase, school_id):
         return res.data
     except Exception as e:
         print(e)
+
+def get_courses(supabase, courses):
+    try:
+        res = (
+            supabase.table('courses')
+            .select('course_code, course_title, credits')
+            .in_('course_code', courses)
+            .execute()
+        )
+        return res.data
+    except Exception as e:
+        print(e)

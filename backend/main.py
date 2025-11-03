@@ -1,17 +1,24 @@
 from fastapi import FastAPI, UploadFile, File
-from db import db_connection, get_degree_id, get_degree_requirements, get_all_schools, get_school_majors
+from db import db_connection, get_degree_id, get_degree_requirements, get_all_schools, get_school_majors, get_courses
 from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
 from parser import parse_transcript
 from course_matching import course_match
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List
 
 origins = [
         "http://localhost:3000",
         "http://localhost:8080",
         "https://yourfrontend.com",
     ]
+
+
+class Courses(BaseModel):
+    courses: List[str]
+    review_courses: List[str]
 
 supabase = None
 @asynccontextmanager
@@ -57,7 +64,6 @@ async def get_requirements(id: int, transcript: UploadFile = File(...)):
     transcript_courses = await parse_transcript(transcript)
 
     res = course_match(res, transcript_courses)
-    print(res)
     return res
     # extract courses from here
 
@@ -72,3 +78,10 @@ async def get_majors(selectedSchool: int):
     res = get_school_majors(supabase, selectedSchool)
 
     return res
+
+@app.post('/courses')
+async def matched_courses(req: Courses):
+    fulfilled = get_courses(supabase, req.courses)
+    review = get_courses(supabase, req.review_courses)
+
+    return [fulfilled, review]
