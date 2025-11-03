@@ -32,7 +32,6 @@ export function CourseMatching({ transferData, onReset }: CourseMatchingProps) {
       )
       setCourses(res.data[0])
       setReview(res.data[1])
-      console.log(transferData.review)
     })
     get_courses()
   }, [])
@@ -49,28 +48,31 @@ export function CourseMatching({ transferData, onReset }: CourseMatchingProps) {
 
       {transferData.courses.length > 0 && (
         <div className="space-y-4">
-          <h3>Credits: </h3>
-          <h1 className="flex justify-self-end text-5xl">{transferData.total_credits} / 60</h1>
+          <div className="flex items-end gap-5 justify-end"> 
+             <h2 className="flex justify-items-end text-xl">Credits: </h2>
+              <h1 className="flex justify-self-end text-5xl">{transferData.total_credits} / 60</h1>
+          </div>
+         
   
           <div>
             <h3 className="text-lg font-medium text-foreground">Fulfilled Requirements</h3>
             <p className="text-sm text-muted-foreground">Courses that transfer and meet degree requirements</p>
           </div>
-          <div className="space-y-2">
-            {courses.map((course, index) => (
+          <div className="space-y-2 flex flex-wrap gap-5">
+            {transferData.courses.map((course, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between border border-border bg-card p-4 transition-colors hover:bg-muted/30"
+                className="flex items-center justify-between border border-border bg-card p-4 transition-colors hover:bg-muted/30 w-sm"
               >
-                <div className="flex-1">
+                <div className="flex gap-5 justify-between w-full items-center">
                   <p className="font-sm text-foreground">
-                    {course.course_code}
+                    {course}
                   </p>
                   <p className="font-medium text-foreground">
-                    {course.course_title}
+                      {courses.find(c => c.course_code == course)?.course_title || '-'}
                   </p>
                    <p className="font-sm text-foreground">
-                    {course.credits}
+                      {courses.find(c => c.course_code == course)?.credits || '-'}
                   </p>
                 </div>
               </div>
@@ -80,28 +82,28 @@ export function CourseMatching({ transferData, onReset }: CourseMatchingProps) {
       )}
 
       {transferData.review.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-4  flex flex-wrap gap-5">
           <div>
             <h3 className="text-lg font-medium text-foreground">Requires Counselor Review</h3>
             <p className="text-sm text-muted-foreground">
               Transfer classes without articulation agreements or may satisfy some elective requirement
             </p>
           </div>
-          <div className="space-y-2">
-            {review.map((course, index) => (
+          <div className="space-y-2 flex flex-wrap gap-5">
+            {transferData.review.map((course, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between border border-border bg-muted/20 p-4 transition-colors hover:bg-muted/40"
+                className="flex items-center justify-between border border-border bg-muted/20 p-4 transition-colors hover:bg-muted/40 w-sm"
               >
-                <div className="flex-1">
+                <div className="flex gap-5 justify-between w-full items-center">
                   <p className="font-sm text-foreground">
-                    {course.course_code}
+                    {course}
                   </p>
                   <p className="font-medium text-foreground">
-                    {course.course_title}
+                    {review.find(c => c.course_code == course)?.course_title || '-'}
                   </p>
                   <p className="font-sm text-foreground">
-                    {course.credits}
+                     {review.find(c => c.course_code == course)?.credits|| '-'}
                   </p>
     
                 </div>
