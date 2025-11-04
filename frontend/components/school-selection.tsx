@@ -36,10 +36,7 @@ export function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
       setSchools(res.data)
     
     })
-
-    fetch_schools()
-    
-
+     fetch_schools()
   }, [])
 
   const handleContinue = () => {
@@ -56,55 +53,58 @@ export function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
 
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Select Your Target School</CardTitle>
-          
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="school">Target School</Label>
-            <Select value={selectedSchool} onValueChange={(value) => {
-              setSelectedSchool(value)
-              handleTargetSchool(value)
-            }}>
-              <SelectTrigger id="school">
-                <SelectValue placeholder="Select a school" />
-              </SelectTrigger>
-              <SelectContent>
-                {(schools ?? []).map(({school_name, school_id}) => (
-                  <SelectItem key={school_name} value={school_id.toString()}>
-                    {school_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+     <div className="flex justify-center items-center min-h-screen">
+    <div className="mx-auto max-w-2xl w-full">
+          <Card className="p-5">
+            <CardHeader>
+              <CardTitle className="flex justify-center text-2xl">Select Your Target School</CardTitle>
+              
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="school">Target School</Label>
+                <Select value={selectedSchool} onValueChange={(value) => {
+                  setSelectedSchool(value)
+                  handleTargetSchool(value)
+                }}>
+                  <SelectTrigger id="school">
+                    <SelectValue placeholder="Select a school" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(schools ?? []).map(({school_name, school_id}) => (
+                      <SelectItem key={school_name} value={school_id.toString()}>
+                        {school_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="major">Intended Major</Label>
-            <Select value={selectedMajor} onValueChange={setSelectedMajor}>
-              <SelectTrigger id="major">
-                <SelectValue placeholder="Select a major" />
-              </SelectTrigger>
-              <SelectContent>
-                {(majors ?? []).map(({program_name, program_id}) => (
-                  <SelectItem key={program_name} value={program_id.toString()}>
-                    {program_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              <div className="space-y-2">
+                <Label htmlFor="major">Intended Major</Label>
+                <Select value={selectedMajor} onValueChange={setSelectedMajor}>
+                  <SelectTrigger id="major">
+                    <SelectValue placeholder="Select a major" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(majors ?? []).map(({program_name, program_id}) => (
+                      <SelectItem key={program_name} value={program_id.toString()}>
+                        {program_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          <div className="flex gap-3">
-            <Button onClick={handleContinue} disabled={!selectedSchool || !selectedMajor} className="flex-1">
-              Continue
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+              <div className="flex gap-3">
+                <Button onClick={handleContinue} disabled={!selectedSchool || !selectedMajor} className="flex-1">
+                  Continue
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+     </div>
+    
   )
 }
