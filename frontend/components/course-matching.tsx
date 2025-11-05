@@ -20,16 +20,25 @@ type Course = {
 export function CourseMatching({ transferData, onReset }: CourseMatchingProps) {
   const [courses, setCourses] = useState <Course[]>([])
   const [review, setReview] = useState <Course[]>([])
+  const [totalCredits, setTotalCredits] = useState(0)
 
   useEffect(() => {
     const get_courses = (async () => {
-      const res = await axios.post('http://127.0.0.1:8000/courses',
+      const res = await axios.post<[Course[], Course[]]>('http://127.0.0.1:8000/courses',
         {
           courses: transferData.courses, 
           review_courses: transferData.review
         }
         
       )
+
+      const uniqueCourses = Array.from(
+  new Map(res.data[0].map(c => [c.course_code, c])).values()
+);
+      const credits = uniqueCourses.reduce(
+        (sum, course) => sum + course.credits, 0)
+
+      setTotalCredits(credits)
       setCourses(res.data[0])
       setReview(res.data[1])
     })
@@ -51,7 +60,7 @@ return (
         <div className="flex items-center gap-5 justify-end"> 
           <h2 className="text-xl text-foreground">Credits:</h2>
           <h1 className="text-5xl font-semibold text-foreground">
-            {transferData.total_credits} / 60
+            {totalCredits} / 60
           </h1>
         </div>
 

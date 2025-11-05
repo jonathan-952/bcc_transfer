@@ -25,8 +25,8 @@ export default function Page() {
     total_credits: 0
   })
 
-  const handleTranscriptParsed = (courses: string[], review: string[], total_credits: number) => {
-    setTransferData((prev) => ({ ...prev, courses, review, total_credits}))
+  const handleTranscriptParsed = (courses: string[], review: string[]) => {
+    setTransferData((prev) => ({ ...prev, courses, review}))
     setStep("results")
   }
 
