@@ -27,12 +27,11 @@ export function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
   const [selectedMajor, setSelectedMajor] = useState("")
   const [schools, setSchools] = useState<School[]>([])
   const [majors, setMajors] = useState<Major[]>([])
-  const API_ROUTE = process.env.API_ROUTE
 
   useEffect(() => {
 
     const fetch_schools = (async () => {
-      const res = await axios.get(`http://127.0.0.1:8000/schools`)
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/schools`)
       setSchools(res.data)
     
     })
