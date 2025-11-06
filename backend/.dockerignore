@@ -1,0 +1,8 @@
+# flyctl launch added from .gitignore
+**/.env
+**/venv
+**/.vscode
+**/__pycache__
+**/supabase
+**/testfile.pdf
+fly.toml
