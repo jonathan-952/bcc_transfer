@@ -27,7 +27,7 @@ export function TranscriptUpload({ onTranscriptParsed, program_id }: TranscriptU
     if (file) {
       formData.append('transcript', file)
       setIsProcessing(true)
-      const res = await axios.post(`http://127.0.0.1:8000/degree/${program_id}/requirements`,
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/degree/${program_id}/requirements`,
         formData,
         {
           headers: {"Content-Type": "multipart/form-data"},

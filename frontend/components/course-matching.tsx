@@ -24,7 +24,7 @@ export function CourseMatching({ transferData, onReset }: CourseMatchingProps) {
 
   useEffect(() => {
     const get_courses = (async () => {
-      const res = await axios.post<[Course[], Course[]]>('http://127.0.0.1:8000/courses',
+      const res = await axios.post<[Course[], Course[]]>(`${process.env.NEXT_PUBLIC_API_URL}/courses`,
         {
           courses: transferData.courses, 
           review_courses: transferData.review

@@ -47,7 +47,7 @@ export function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
 
   const handleTargetSchool = async (value : string) => {
     console.log(selectedSchool)
-    const res = await axios.get(`http://127.0.0.1:8000/schools/${value}/majors`)
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/schools/${value}/majors`)
     setMajors(res.data)
   }
 
