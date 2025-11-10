@@ -12,7 +12,8 @@ from typing import List
 origins = [
         "http://localhost:3000",
         "http://localhost:8080",
-        'https://bcc-transfer-fe.vercel.app'
+        'https://bcc-transfer-fe.vercel.app',
+        'https://www.easiertransfer.tech'
     ]
 
 
