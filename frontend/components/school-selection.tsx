@@ -52,58 +52,93 @@ export function SchoolSelection({ onSchoolSelected}: SchoolSelectionProps) {
 
 
   return (
-     <div className="flex justify-center items-center min-h-screen">
-    <div className="mx-auto max-w-2xl w-full">
-          <Card className="p-5">
-            <CardHeader>
-              <CardTitle className="flex justify-center text-2xl">Select Your Target School</CardTitle>
-              
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="school">Target School</Label>
-                <Select value={selectedSchool} onValueChange={(value) => {
+    <div className="flex justify-center items-start sm:items-center min-h-[calc(100vh-8rem)] py-4 sm:py-0">
+      <div className="w-full max-w-2xl animate-fade-in">
+        <Card className="border-border/50 shadow-lg">
+          <CardHeader className="space-y-3 pb-6">
+            <CardTitle className="text-2xl sm:text-3xl font-semibold text-center tracking-tight">
+              Select Your Target School
+            </CardTitle>
+            <CardDescription className="text-center text-sm sm:text-base">
+              Choose the university and program you want to transfer to
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-6 p-6 sm:p-8">
+            <div className="space-y-3">
+              <Label htmlFor="school" className="text-base font-medium">
+                Target School
+              </Label>
+              <Select
+                value={selectedSchool}
+                onValueChange={(value) => {
                   setSelectedSchool(value)
                   handleTargetSchool(value)
-                }}>
-                  <SelectTrigger id="school">
-                    <SelectValue placeholder="Select a school" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(schools ?? []).map(({school_name, school_id}) => (
-                      <SelectItem key={school_name} value={school_id.toString()}>
-                        {school_name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  setSelectedMajor("") // Reset major when school changes
+                }}
+              >
+                <SelectTrigger
+                  id="school"
+                  className="h-12 text-base border-border/60 hover:border-border transition-colors"
+                >
+                  <SelectValue placeholder="Choose a school..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {(schools ?? []).map(({school_name, school_id}) => (
+                    <SelectItem
+                      key={school_id}
+                      value={school_id.toString()}
+                      className="text-base py-3"
+                    >
+                      {school_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="major">Intended Major</Label>
-                <Select value={selectedMajor} onValueChange={setSelectedMajor}>
-                  <SelectTrigger id="major">
-                    <SelectValue placeholder="Select a major" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(majors ?? []).map(({program_name, program_id}) => (
-                      <SelectItem key={program_name} value={program_id.toString()}>
-                        {program_name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="space-y-3">
+              <Label htmlFor="major" className="text-base font-medium">
+                Intended Major
+              </Label>
+              <Select
+                value={selectedMajor}
+                onValueChange={setSelectedMajor}
+                disabled={!selectedSchool || majors.length === 0}
+              >
+                <SelectTrigger
+                  id="major"
+                  className="h-12 text-base border-border/60 hover:border-border transition-colors disabled:opacity-50"
+                >
+                  <SelectValue placeholder={!selectedSchool ? "Select a school first" : "Choose a major..."} />
+                </SelectTrigger>
+                <SelectContent>
+                  {(majors ?? []).map(({program_name, program_id}) => (
+                    <SelectItem
+                      key={program_id}
+                      value={program_id.toString()}
+                      className="text-base py-3"
+                    >
+                      {program_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-              <div className="flex gap-3">
-                <Button onClick={handleContinue} disabled={!selectedSchool || !selectedMajor} className="flex-1">
-                  Continue
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-     </div>
-    
+            <div className="pt-4">
+              <Button
+                onClick={handleContinue}
+                disabled={!selectedSchool || !selectedMajor}
+                className="w-full h-12 text-base font-medium transition-all hover:scale-[1.02] active:scale-[0.98] disabled:hover:scale-100"
+                size="lg"
+              >
+                Continue to Upload Transcript
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   )
 }

@@ -10,17 +10,20 @@ from pydantic import BaseModel
 from typing import List
 
 origins = [
-        "http://localhost:3000",
-        "http://localhost:8080",
-        'https://bcc-transfer-fe.vercel.app'
-    ]
+    "http://localhost:3000",
+    "http://localhost:8080",
+    'https://bcc-transfer-fe.vercel.app'
+]
 
 
 class Courses(BaseModel):
     courses: List[str]
     review_courses: List[str]
 
+
 supabase = None
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
@@ -34,17 +37,19 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         print(e)
     yield
-    
-        
+
+
 app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  # List of allowed origins
     allow_credentials=True,  # Allow cookies and authorization headers
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+    # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+    allow_methods=["*"],
     allow_headers=["*"],  # Allow all headers in the request
 )
+
 
 @app.get('/')
 async def main():
@@ -53,19 +58,21 @@ async def main():
 
 @app.get('/degree/{id}')
 async def get_degree(id: int):
-    
+
     return get_degree_id(supabase, id)
+
 
 @app.post('/degree/{id}/requirements')
 async def get_requirements(id: int, transcript: UploadFile = File(...)):
     # take in transcript from client and pass to func
     res = get_degree_requirements(supabase, id)
-    
+
     transcript_courses = await parse_transcript(transcript)
 
     res = course_match(res, transcript_courses)
     return res
     # extract courses from here
+
 
 @app.get('/schools')
 async def get_schools():
@@ -73,11 +80,13 @@ async def get_schools():
 
     return res
 
+
 @app.get('/schools/{selectedSchool}/majors')
 async def get_majors(selectedSchool: int):
     res = get_school_majors(supabase, selectedSchool)
 
     return res
+
 
 @app.post('/courses')
 async def matched_courses(req: Courses):
