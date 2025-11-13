@@ -65,6 +65,7 @@ async def get_requirements(id: int, transcript: UploadFile = File(...)):
     transcript_courses = await parse_transcript(transcript)
 
     res = course_match(res, transcript_courses)
+    
     return res
     # extract courses from here
 

@@ -9,15 +9,13 @@ import { Upload, FileText, Loader2 } from "lucide-react"
 import axios from 'axios';
 
 type TranscriptUploadProps = {
-  onTranscriptParsed: (courses: string[], review: string[]) => void
+  onTranscriptParsed: (courses: string[], review: string[], unfulfilled: number[], unfulfilled_group: number[]) => void
   program_id : string
 }
 
 export function TranscriptUpload({ onTranscriptParsed, program_id }: TranscriptUploadProps) {
   const [isProcessing, setIsProcessing] = useState(false)
   const [courses, setCourses] = useState([])
-
-  const API_ROUTE = process.env.API_ROUTE
 
 
   const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +33,8 @@ export function TranscriptUpload({ onTranscriptParsed, program_id }: TranscriptU
       
       setIsProcessing(false)
       setCourses(res.data)
-      onTranscriptParsed(res.data.courses, res.data.review)
+      console.log(res.data.unfulfilled)
+      onTranscriptParsed(res.data.courses, res.data.review, res.data.unfulfilled, res.data.unfulfilled_group)
     }
   }
 
