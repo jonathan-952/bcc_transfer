@@ -23,7 +23,7 @@ type GroupRequirement = {
     courses: string
     credits: number
     group_count: number
-  } 
+  }[] 
 }
 
 
@@ -105,12 +105,12 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
               onClick={() => setSelectedRequirement({ type: "group", data: groupReq })}
               className="bg-white border-2 border-black p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105 cursor-pointer"
             >
-              <p className="text-sm text-muted-foreground">Choose {groupReq.groups.group_count} out of the next {groupReq.total} course groups</p>
+              <p className="text-sm text-muted-foreground">Choose {groupReq.groups[0].group_count} out of the next {groupReq.total} course groups</p>
             </div>
           ))}
         </div>
       </div>
-{/* 
+
       {selectedRequirement && (
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300"
@@ -124,13 +124,13 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
               <div>
                 <h2 className="text-2xl font-semibold text-foreground">
                   {selectedRequirement.type === "single"
-                    ? (selectedRequirement.data as UnfulfilledRequirement).title
-                    : (selectedRequirement.data as GroupRequirement).title}
+                    ? "Course Options"
+                    : "Group Course Options"}
                 </h2>
                 <p className="text-sm text-muted-foreground mt-1">
                   {selectedRequirement.type === "single"
-                    ? "Choose one of the following courses to fulfill this requirement"
-                    : (selectedRequirement.data as GroupRequirement).description}
+                    ? `Choose 1 of the following ${(selectedRequirement.data as SingleRequirement).courses.split(',').length} courses`
+                    : `Choose ${(selectedRequirement.data as GroupRequirement).groups[0].group_count} out of ${(selectedRequirement.data as GroupRequirement).total} course groups`}
                 </p>
               </div>
               <button
@@ -144,15 +144,14 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
             <div className="p-6 overflow-y-auto max-h-[calc(80vh-120px)]">
               {selectedRequirement.type === "single" ? (
                 <div className="space-y-3">
-                  {(selectedRequirement.data as UnfulfilledRequirement).options.map((option, idx) => (
+                  {(selectedRequirement.data as SingleRequirement).courses.split(',').map((course, idx) => (
                     <div
                       key={idx}
                       className="flex items-center justify-between bg-white border-2 border-black p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105"
                     >
                       <div className="flex gap-3 justify-between w-full items-center">
-                        <p className="text-sm font-semibold text-foreground">{option.code}</p>
-                        <p className="font-medium text-foreground text-center flex-1">{option.title}</p>
-                        <p className="text-sm font-semibold text-foreground">{option.credits}</p>
+                        <p className="text-sm font-semibold text-foreground">{course.trim()}</p>
+                        <p className="text-sm font-semibold text-foreground">{(selectedRequirement.data as SingleRequirement).credits}</p>
                       </div>
                     </div>
                   ))}
@@ -161,22 +160,15 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
                 <div className="space-y-6">
                   {(selectedRequirement.data as GroupRequirement).groups.map((group, idx) => (
                     <div key={idx} className="space-y-3">
-                      <h3 className="text-lg font-semibold text-foreground border-b border-border pb-2">
-                        {group.name}
-                      </h3>
-                      <div className="space-y-3">
-                        {group.options.map((option, optIdx) => (
-                          <div
-                            key={optIdx}
-                            className="flex items-center justify-between bg-white border-2 border-black p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105"
-                          >
-                            <div className="flex gap-3 justify-between w-full items-center">
-                              <p className="text-sm font-semibold text-foreground">{option.code}</p>
-                              <p className="font-medium text-foreground text-center flex-1">{option.title}</p>
-                              <p className="text-sm font-semibold text-foreground">{option.credits}</p>
-                            </div>
-                          </div>
-                        ))}
+                      <div className="flex items-center justify-between bg-white border-2 border-black p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105">
+                        <div className="flex gap-3 justify-between w-full items-center">
+                          {group.courses.split(',').map((course, cidx) => (
+                            <p key={cidx} className="text-sm font-semibold text-foreground">
+                              {course.trim()}
+                            </p>
+                          ))}
+                          <p className="text-sm font-semibold text-foreground">{group.credits}</p>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -185,7 +177,7 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
             </div>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   )
 }
