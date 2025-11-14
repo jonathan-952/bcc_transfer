@@ -5,6 +5,7 @@ import { TranscriptUpload } from "@/components/transcript-upload"
 import { SchoolSelection } from "@/components/school-selection"
 import { CourseMatching } from "@/components/course-matching"
 import { GraduationCap } from "lucide-react"
+import { UnfulfilledRequirements } from "@/components/unfulfilled-requirements"
 
 
 export type TransferData = {
@@ -55,6 +56,8 @@ export default function Page() {
         {step === "results" && (
           <div className="space-y-12">
             <CourseMatching transferData={transferData} onReset={handleReset} />
+            <UnfulfilledRequirements transferData={transferData} onReset={handleReset}/>
+
           </div>
         )}
       </main>

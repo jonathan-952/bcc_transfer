@@ -63,3 +63,28 @@ def get_courses(supabase, courses):
         return res.data
     except Exception as e:
         print(e)
+
+def get_single_requirements(supabase, requirements):
+    try:
+        res = (
+            supabase.table('requirements')
+            .select('requirement_id, courses, credits')
+            .in_('requirement_id', requirements)
+            .execute()
+        )
+        return res.data
+    except Exception as e:
+        print(e)
+
+
+def get_group_requirements(supabase, requirements):
+    try:
+        res = (
+            supabase.table('requirements')
+            .select('courses, credits, group_id, group_count')
+            .in_('group_id', requirements)
+            .execute()
+        )
+        return res.data
+    except Exception as e:
+        print(e)

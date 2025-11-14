@@ -1,5 +1,5 @@
-from fastapi import FastAPI, UploadFile, File
-from db import db_connection, get_degree_id, get_degree_requirements, get_all_schools, get_school_majors, get_courses
+from fastapi import FastAPI, UploadFile, File, Query
+from db import db_connection, get_degree_id, get_degree_requirements, get_all_schools, get_school_majors, get_courses, get_group_requirements, get_single_requirements
 from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
@@ -65,7 +65,7 @@ async def get_requirements(id: int, transcript: UploadFile = File(...)):
     transcript_courses = await parse_transcript(transcript)
 
     res = course_match(res, transcript_courses)
-    
+
     return res
     # extract courses from here
 
@@ -87,3 +87,10 @@ async def matched_courses(req: Courses):
     review = get_courses(supabase, req.review_courses)
 
     return [fulfilled, review]
+
+@app.get('/unfulfilled')
+async def get_unfulfilled_requirements(single: List[int] = Query(default = []), group: List[int] = Query(default = [])):
+    group_requirements = get_group_requirements(supabase, group)
+    single_requirements = get_single_requirements(supabase, single)
+
+    return [group_requirements, single_requirements]

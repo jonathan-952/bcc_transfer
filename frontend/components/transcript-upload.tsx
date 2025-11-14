@@ -33,7 +33,6 @@ export function TranscriptUpload({ onTranscriptParsed, program_id }: TranscriptU
       
       setIsProcessing(false)
       setCourses(res.data)
-      console.log(res.data.unfulfilled)
       onTranscriptParsed(res.data.courses, res.data.review, res.data.unfulfilled, res.data.unfulfilled_group)
     }
   }
