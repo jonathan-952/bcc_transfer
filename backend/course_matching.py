@@ -80,6 +80,7 @@ def course_match(requirements, transcript_courses):
         used_courses += fulfilled
 
         fulfilled_courses += fulfilled
+
     return {
         'courses' : fulfilled_courses,
         # label as review if either transfer or not directly in requirements, can still fulfill elective

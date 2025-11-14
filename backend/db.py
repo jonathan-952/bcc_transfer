@@ -65,11 +65,14 @@ def get_courses(supabase, courses):
         print(e)
 
 def get_single_requirements(supabase, requirements):
+    if not requirements:
+        return []
     try:
         res = (
             supabase.table('requirements')
             .select('requirement_id, courses, credits')
             .in_('requirement_id', requirements)
+            .not_.is_("courses", 'null')
             .execute()
         )
         return res.data
@@ -78,13 +81,18 @@ def get_single_requirements(supabase, requirements):
 
 
 def get_group_requirements(supabase, requirements):
+    if not requirements:
+        return []
     try:
         res = (
             supabase.table('requirements')
             .select('courses, credits, group_id, group_count')
             .in_('group_id', requirements)
+            .not_.is_("courses", 'null')
             .execute()
         )
-        return res.data
+        groups = {}
+        [groups.setdefault(row["group_id"], []).append(row) for row in res.data]
+        return groups
     except Exception as e:
         print(e)
