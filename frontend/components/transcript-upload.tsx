@@ -15,7 +15,6 @@ type TranscriptUploadProps = {
 
 export function TranscriptUpload({ onTranscriptParsed, program_id }: TranscriptUploadProps) {
   const [isProcessing, setIsProcessing] = useState(false)
-  const [courses, setCourses] = useState([])
 
 
   const handleFileInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,47 +31,47 @@ export function TranscriptUpload({ onTranscriptParsed, program_id }: TranscriptU
         })
       
       setIsProcessing(false)
-      setCourses(res.data)
       onTranscriptParsed(res.data.courses, res.data.review, res.data.unfulfilled, res.data.unfulfilled_group)
     }
   }
-
-  return (
-    <div className="flex justify-center items-center min-h-screen px-4">
-  <div className="w-full max-w-2xl aspect-square">
-    <Card>
-      <CardContent className="space-y-6">
-        {isProcessing ? (
-          <div className="flex flex-col items-center gap-3 text-center">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="font-medium text-foreground">Processing transcript...</p>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center gap-3 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-              <Upload className="h-8 w-8 text-primary" />
+return (
+  <div className="flex justify-center items-center min-h-screen px-4">
+    <div className="w-full max-w-2xl aspect-square flex items-center justify-cente">
+      <Card className="w-full p-6 flex items-center justify-center shadow-md">
+        <CardContent className="space-y-6 flex flex-col items-center justify-center">
+          {isProcessing ? (
+            <div className="flex flex-col items-center gap-3 text-center">
+              <Loader2 className="h-12 w-12 animate-spin text-primary" />
+              <p className="font-medium text-foreground">Processing transcript...</p>
             </div>
-            <div>
-              <p className="font-medium text-foreground">Drag and drop your transcript here</p>
-              <p className="text-sm text-muted-foreground">or click to browse files</p>
+          ) : (
+            <div className="flex flex-col items-center gap-3 text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                <Upload className="h-8 w-8 text-primary" />
+              </div>
+              <div>
+                <p className="font-medium text-foreground">Drag and drop your transcript here</p>
+                <p className="text-sm text-muted-foreground">or click to browse files</p>
+              </div>
+              <Button variant="outline" size="sm" asChild>
+                <label className="cursor-pointer">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Choose File
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept=".pdf"
+                    onChange={handleFileInput}
+                  />
+                </label>
+              </Button>
             </div>
-            <Button variant="outline" size="sm" asChild>
-              <label className="cursor-pointer">
-                <FileText className="mr-2 h-4 w-4" />
-                Choose File
-                <input
-                  type="file"
-                  className="hidden"
-                  accept=".pdf"
-                  onChange={handleFileInput}
-                />
-              </label>
-            </Button>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   </div>
-</div>
-  )
+)
+
+
 }

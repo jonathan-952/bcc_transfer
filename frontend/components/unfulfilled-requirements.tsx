@@ -94,8 +94,8 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
 
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-medium text-foreground">Group Requirements</h3>
-          <p className="text-sm text-muted-foreground">Choose from multiple course options to fulfill requirements</p>
+          <h3 className="text-lg font-medium text-foreground">Unfulfilled Group Requirements</h3>
+          <p className="text-sm text-muted-foreground">Choose from multiple course options to fulfill requirement</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
@@ -105,7 +105,7 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
               onClick={() => setSelectedRequirement({ type: "group", data: groupReq })}
               className="bg-white border-2 border-black p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105 cursor-pointer"
             >
-              <p className="text-sm text-muted-foreground">Choose {groupReq.groups[0].group_count} out of the next {groupReq.total} course groups</p>
+              <p className="text-sm text-foreground">Choose {groupReq.groups[0].group_count} out of the next {groupReq.total} course groups</p>
             </div>
           ))}
         </div>
@@ -135,7 +135,7 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
               </div>
               <button
                 onClick={() => setSelectedRequirement(null)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -147,7 +147,7 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
                   {(selectedRequirement.data as SingleRequirement).courses.split(',').map((course, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between bg-white border-2 border-black p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105"
+                      className="flex items-center justify-between bg-white border-2 p-4 rounded-lg"
                     >
                       <div className="flex gap-3 justify-between w-full items-center">
                         <p className="text-sm font-semibold text-foreground">{course.trim()}</p>
@@ -157,22 +157,30 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
                   ))}
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-6 max-h-[400px] overflow-y-auto">
                   {(selectedRequirement.data as GroupRequirement).groups.map((group, idx) => (
                     <div key={idx} className="space-y-3">
-                      <div className="flex items-center justify-between bg-white border-2 border-black p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105">
-                        <div className="flex gap-3 justify-between w-full items-center">
+                      <div className="flex flex-col bg-white border-2 p-4 rounded-lg">
+                        {/* Courses container with flex wrap */}
+                        <div className="flex flex-wrap gap-3 mb-2">
                           {group.courses.split(',').map((course, cidx) => (
-                            <p key={cidx} className="text-sm font-semibold text-foreground">
+                            <p
+                              key={cidx}
+                              className="text-sm font-semibold text-foreground bg-gray-100 px-2 py-1 rounded"
+                            >
                               {course.trim()}
                             </p>
                           ))}
-                          <p className="text-sm font-semibold text-foreground">{group.credits}</p>
                         </div>
+                        {/* Credits */}
+                        <p className="text-sm font-semibold text-foreground">
+                          Credits: {group.credits}
+                        </p>
                       </div>
                     </div>
                   ))}
                 </div>
+
               )}
             </div>
           </div>

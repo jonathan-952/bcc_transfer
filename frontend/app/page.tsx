@@ -35,8 +35,8 @@ export default function Page() {
     setStep("results")
   }
 
-  const handleSchoolSelected = (school: string, major: string) => {
-    setTransferData((prev) => ({ ...prev, targetSchool: school, targetMajor: major }))
+  const handleSchoolSelected = (school: string, major: string, total_credits: number) => {
+    setTransferData((prev) => ({ ...prev, targetSchool: school, targetMajor: major, total_credits: total_credits }))
     setStep("upload")
   }
 
@@ -56,6 +56,7 @@ export default function Page() {
         {step === "results" && (
           <div className="space-y-12">
             <CourseMatching transferData={transferData} onReset={handleReset} />
+            <hr className="border-t border-gray-500" />
             <UnfulfilledRequirements transferData={transferData} onReset={handleReset}/>
 
           </div>
