@@ -93,6 +93,4 @@ async def get_unfulfilled_requirements(single: List[int] = Query(default = []), 
     group_requirements = get_group_requirements(supabase, group)
     single_requirements = get_single_requirements(supabase, single)
 
-    print(group_requirements)
-
     return [group_requirements, single_requirements]

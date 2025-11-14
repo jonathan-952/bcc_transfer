@@ -18,6 +18,7 @@ type SingleRequirement = {
 
 type GroupRequirement = {
   group_id: number
+  total: number
   groups: {
     courses: string
     credits: number
@@ -81,7 +82,7 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
               </div>
                :
               <div className="flex gap-3 justify-between w-full items-center">
-                <p className="text-sm font-semibold text-foreground">Choose 1 of the next {requirement.courses.split(',').length} courses</p>
+                <p className="text-sm text-foreground">Choose 1 of the next {requirement.courses.split(',').length} courses</p>
                 <p className="text-sm font-semibold text-foreground">{requirement.credits}</p>
               </div>
               }
@@ -91,25 +92,25 @@ export function UnfulfilledRequirements({ transferData, onReset }: CourseMatchin
         </div>
       </div>
 
-      {/* <div className="space-y-4">
+      <div className="space-y-4">
         <div>
           <h3 className="text-lg font-medium text-foreground">Group Requirements</h3>
           <p className="text-sm text-muted-foreground">Choose from multiple course options to fulfill requirements</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-          {groupRequirements.map((groupReq, index) => (
+          {groupRequirements && groupRequirements.map((groupReq, index) => (
             <div
               key={index}
               onClick={() => setSelectedRequirement({ type: "group", data: groupReq })}
               className="bg-white border-2 border-black p-4 rounded-lg shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105 cursor-pointer"
             >
-              <p className="text-sm text-muted-foreground">Choose {groupReq.description} out of the next </p>
+              <p className="text-sm text-muted-foreground">Choose {groupReq.groups.group_count} out of the next {groupReq.total} course groups</p>
             </div>
           ))}
         </div>
       </div>
-
+{/* 
       {selectedRequirement && (
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-300"

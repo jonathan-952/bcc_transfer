@@ -91,8 +91,24 @@ def get_group_requirements(supabase, requirements):
             .not_.is_("courses", 'null')
             .execute()
         )
-        groups = {}
-        [groups.setdefault(row["group_id"], []).append(row) for row in res.data]
+        ordered = {}
+        [ordered.setdefault(row["group_id"], []).append(row) for row in res.data]
+        groups = [
+            {
+                "group_id": gid,
+                "groups": [
+                    {
+                        "courses": item["courses"],
+                        "credits": item["credits"],
+                        "group_count": item["group_count"],
+                    }
+                    for item in items
+                ],
+                "total": len(items),
+            }
+            for gid, items in ordered.items()
+        ]
+
         return groups
     except Exception as e:
         print(e)
